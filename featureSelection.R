@@ -7,7 +7,7 @@ library(KnowSeq)
 
 #' @param data The data parameter is an expression matrix or data.frame that contains the genes in the columns and the samples in the rows.
 #' @param labels A vector or factor that contains the labels for each samples in data parameter.
-#' @param vars_selected The genes selected to use in the feature selection process. It can be the final DEGs extracted with the function \code{\link{limmaDEGsExtraction}} or a custom vector of genes.
+#' @param vars_selected The genes selected to use in the feature selection process.
 #' @param mode The algorithm used to calculate the genes ranking. The possibilities are two: mrmr, rf and da.
 #' @param disease The name of a disease in order to calculate the Disease Association ranking by using the DEGs indicated in the vars_selected parameter.
 #' @return A vector that contains the ranking of genes.
@@ -83,7 +83,7 @@ daFeatureSelection <-function(data,labels,mode="da",disease="",maxGenes=30,retur
   if(grepl('daLOD',mode)){
     cat("Calculating genes LOD scores...\n")
     range01 <- function(x){(x-min(x))/(max(x)-min(x))}
-    limma.table.aux <- limmaDEGsExtraction(t(data),labels)$Table
+    limma.table.aux <- DEGsExtraction(t(data),labels)$Table
 
     if(length(levels(labels)) == 2) limma.table <- data.frame('lods'=range01(limma.table.aux$B))
     else if(length(levels(labels)) > 2) limma.table <- data.frame('lods'=range01(rowMeans(limma.table.aux$lods)))
